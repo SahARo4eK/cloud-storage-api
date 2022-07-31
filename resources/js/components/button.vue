@@ -1,13 +1,20 @@
 <template>
-    <div class="buttonVue">
+    <div class="buttonVue"
+         @click="upload">
         {{buttonText}}
     </div>
 </template>
 
 <script>
+    import axios from 'axios';
 export default {
     props: {
         buttonText: {type: String}
+    },
+    methods: {
+        upload(){
+            //axios.get('/test');
+        }
     }
 }
 </script>

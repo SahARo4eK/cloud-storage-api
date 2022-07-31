@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 class FileController extends Controller
 {
     public function upload(Request $request)
-    {
+    {        
         $validator = Validator::make($request->all(),[ 
-              'file' => 'required|mimes:doc,docx,pdf,txt,csv,png|max:2048',
+              'file' => 'required|mimes:doc,docx,pdf,txt,csv,png,jpg,gif,jpeg|max:2048',
         ]);   
  
         if($validator->fails()) {          
@@ -27,7 +27,6 @@ class FileController extends Controller
 //            $name = $file->getClientOriginalName();
         
             $tmpName = $_FILES['file']['tmp_name'];
-            //return $tmpName;
             $fileName = $_FILES['file']['name'];
             move_uploaded_file($tmpName, '../public/users-files/user1/' . $fileName);
  

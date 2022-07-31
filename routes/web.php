@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\FileController;
+use App\Http\Controllers\API\IndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +18,5 @@ use App\Http\Controllers\API\FileController;
 Route::get('/', function () {
     return view('welcome');
 });
-
-
+Route::get('get-directory', [IndexController::class, 'getDirectory']);
 Route::post('uploading-file-api', [FileController::class, 'upload']);

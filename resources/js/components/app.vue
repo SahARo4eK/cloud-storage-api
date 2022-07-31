@@ -28,6 +28,7 @@
 
 <script>
     import ButtonVue from '../components/button.vue';
+    import axios from 'axios';
     export default {
     components: {
         ButtonVue
@@ -35,12 +36,14 @@
     data() {
         return {
             text: "Some Text",
-            objects: [
-                {name: 'папка', type: 'folder'},
-                {name: 'файл1', type: 'file'},
-                {name: 'файл2', type: 'file'}
-            ]
+            objects: []
         }
+    },
+    mounted() {
+        axios.get('/get-directory') 
+        .then(res => {
+            this.objects = res.data;
+        });
     }
 }
 </script>
