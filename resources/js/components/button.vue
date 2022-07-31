@@ -1,6 +1,6 @@
 <template>
     <div class="buttonVue"
-        v-if="type=='download'">
+         v-if="type=='download'">
         <a :href="downloadLink" download>{{text}}</a>
     </div>
     <div class="buttonVue"
@@ -18,7 +18,7 @@
                    @hideDialog="hideDialog"
                    v-if="type=='upload'">
             Выберите файл
-            <input type="file">
+            <input enctype="multipart/form-data" type="file" ref="file">
             <button @click="upload"> Загрузить </button>
         </dialogvue>
 
@@ -28,14 +28,14 @@
             Вы действительно хотите удалить {{itemName}}?
             <button @click="deletee"> Удалить </button>
         </dialogvue>
-        
+
         <dialogVue v-model:show="dialogVisible" 
                    @hideDialog="hideDialog"
                    v-if="type=='rename'">
             <input type="text" size="30" placeholder="Введите новое имя">
             <button @click="rename"> Переименовать </button>
         </dialogvue>
-        
+
         {{text}}
     </div>
 </template>
@@ -55,7 +55,8 @@
         data() {
             return {
                 dialogVisible: false,
-                downloadLink: "/users-files/user1/" + this.itemName
+                downloadLink: "/users-files/user1/" + this.itemName,
+                file: ''
             }
         },
         methods: {
@@ -69,13 +70,20 @@
                         });
             },
             upload() {
-                const inputFile = document.getElementsByTagName("input")[0].value;
-                axios.post('/upload-file', {
-                    file: inputFile
-                })
+                this.file = this.$refs.file.files[0];
+                let formData = new FormData();
+                formData.append('file', this.file);
+                axios.post('/upload-file',
+                        formData,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        })
                         .then(function () {
                             location.reload();
                         });
+
             },
             deletee() {
                 axios.post('/delete-item', {

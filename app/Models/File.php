@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Model
 {
     use HasFactory;
+	
+	public static function getExtension($filename) {
+		return preg_replace('/^.*\.(.*)$/U', '$1', $filename);
+	}
 }
