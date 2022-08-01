@@ -17,6 +17,7 @@ use App\Http\Controllers\API\IndexController;
 
 Route::get('get-directory', [IndexController::class, 'getDirectory']);
 Route::get('get-user-name', [IndexController::class, 'getUser']);
+Route::get('get-directory-size', [IndexController::class, 'getDirectorySize']);
 Route::post('create-folder', [FileController::class, 'create']);
 Route::post('upload-file', [FileController::class, 'upload']);
 Route::post('delete-item', [FileController::class, 'delete']);

@@ -23,22 +23,23 @@ class FileController extends Controller
 	public function upload(Request $request)
 	{
 		$userFolder = File::getUserDir();
-//		$validator = Validator::make($request->all(), [
-//					'file' => 'required|mimes:doc,docx,pdf,txt,csv,png,jpg,gif,jpeg|max:20480000',
-//		]);
-//		
-//		if ($validator->fails()) {
-//			return [
-//				'status' => 'false',
-//				'message' => $validator->errors()
-//			];
-//		}
-
-//        $file = $request->file('file');
-//        if ($file) {
-//            $path = $file->store('public/users-files/user1');
-//            $name = $file->getClientOriginalName();
-		//$fileData = $request->get('fileData');
+		$paramFolder = $request->get('folder');
+		if($paramFolder != null) {
+			$uploadFolder = $userFolder . '/' .$paramFolder;
+		}
+		else {
+			$uploadFolder = $userFolder;
+		}
+		
+		$validator = Validator::make($request->all(), [
+					'file' => 'required|max:2048',
+		]);
+		if ($validator->fails()) {
+			return [
+				'status' => 'false',
+				'message' => $validator->errors()
+			];
+		}
 		$tmpName = $_FILES['file']['tmp_name'];
 		$fileName = $_FILES['file']['name'];
 		if('php' == File::getExtension($fileName)){
@@ -47,21 +48,12 @@ class FileController extends Controller
 				'message' => '.php extension not allowed'
 			];
 		}
-		move_uploaded_file($tmpName, $userFolder . $fileName);
-
-		//store your file into directory and db
-//            $save = new File();
-//            $save->name = $file;
-//            $save->path= $path;
-//            $save->save();
-
+		move_uploaded_file($tmpName, $uploadFolder . '/' . $fileName);
 		return [
 			"status" => true,
 			"message" => "File successfully uploaded",
 			"file" => $fileName
 		];
-
-		//}
 	}
 
 	public function delete(Request $request)
@@ -70,6 +62,10 @@ class FileController extends Controller
 		$itemName = $request->get('itemName');
 		$itemFullPath = $userFolder . $itemName;
 			if(is_dir($itemFullPath)) {
+				$files = File::scanDirectory($itemFullPath);
+				foreach ($files as $file) {
+					unlink($itemFullPath . '/' . $file);
+				}
 				rmdir($itemFullPath);
 			}
 			else {

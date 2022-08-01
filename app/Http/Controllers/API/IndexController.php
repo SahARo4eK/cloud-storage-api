@@ -9,13 +9,14 @@ use App\Models\File;
 
 class IndexController extends Controller
 {
+
 	public function getDirectory()
 	{
 		$userDirectory = File::getUserDir();
-		if(!is_dir($userDirectory)) {
+		if (!is_dir($userDirectory)) {
 			mkdir($userDirectory);
 		}
-		$filesFolders = array_diff(scandir($userDirectory), array('..', '.'));
+		$filesFolders = File::scanDirectory($userDirectory);
 		$response = [];
 		foreach ($filesFolders as $item) {
 			$type = 'file';
@@ -30,10 +31,26 @@ class IndexController extends Controller
 		return $response;
 	}
 
-	public function getUser(Request $request)
+	public function getUser()
 	{
 		$users = DB::select('select name from users');
 		return ['users' => $users];
+	}
+
+	public function getDirectorySize(Request $request)
+	{
+		$folder = $request->get('folder');
+		$directory = File::getUserDir();
+		if(null != $folder) {
+			$directory .= $folder . '/';
+		}
+		if(!is_dir($directory)) {
+			return [
+				'status' => 'false',
+				'message' => 'There is no folder: ' . $folder
+			];
+		}
+		return File::getDirSize($directory);
 	}
 
 }

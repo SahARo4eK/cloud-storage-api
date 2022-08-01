@@ -4,6 +4,7 @@
         <div class="table__menu">
             <buttonVue :text="'Создать папку'" :type="'create'"/>
             <buttonVue :text="'Загрузить файл'" :type="'upload'"/>
+            <buttonVue :text="'Размер директории'" :type="'dirSize'"/>
         </div>
         <div class="table__items">
             <div class="table__item" 
@@ -13,6 +14,8 @@
                     <div class="item__name" style="margin-right: 10px"> {{object.name}}</div>
                     <buttonVue :text="'Переименовать'" :type="'rename'" :itemName="object.name"/>
                     <buttonVue :text="'Удалить'" :type="'delete'" :itemName="object.name"/>
+                    <buttonVue :text="'Загрузить файл в папку'" :type="'folderUpload'" :itemName="object.name"/>
+                    <buttonVue :text="'Размер папки'" :type="'folderSize'" :itemName="object.name"/>
                 </div>
                 <div class="item__file"
                      v-else>
