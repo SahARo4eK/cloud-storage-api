@@ -14,8 +14,8 @@
                     <div class="item__name" style="margin-right: 10px"> {{object.name}}</div>
                     <buttonVue :text="'Переименовать'" :type="'rename'" :itemName="object.name"/>
                     <buttonVue :text="'Удалить'" :type="'delete'" :itemName="object.name"/>
-                    <buttonVue :text="'Загрузить файл в папку'" :type="'folderUpload'" :itemName="object.name"/>
-                    <buttonVue :text="'Размер папки'" :type="'folderSize'" :itemName="object.name"/>
+                    <buttonVue :text="'Загрузить файл сюда'" :type="'folderUpload'" :itemName="object.name"/>
+                    <buttonVue :text="'Размер'" :type="'folderSize'" :itemName="object.name"/>
                 </div>
                 <div class="item__file"
                      v-else>
@@ -23,6 +23,7 @@
                     <buttonVue :text="'Переименовать'" :type="'rename'" :itemName="object.name"/>
                     <buttonVue :text="'Удалить'" :type="'delete'" :itemName="object.name"/>
                     <buttonVue :text="'Скачать'" :type="'download'" :itemName="object.name"/>
+                    <buttonVue :text="'Ссылка'" :type="'link'" :itemName="object.name"/>
                 </div>
             </div>
         </div>

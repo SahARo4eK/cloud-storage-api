@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
+	public function getFileUrl(Request $request) {
+		$userFolder = str_replace('..', '', File::getUserDir()); // Убираю .. в начале ссылки
+		$fileFolder = str_replace('/public', '', $userFolder); // Убираю /public в начале ссылки
+		$url = ((!empty(filter_input(INPUT_SERVER, 'HTTPS'))) ? 'https' : 'http') . '://' . filter_input(INPUT_SERVER, 'HTTP_HOST'); 
+		return $url . $fileFolder . $request->get('fileName');
+	}
+	
 	public function create(Request $request)
 	{
 		$userFolder = File::getUserDir();

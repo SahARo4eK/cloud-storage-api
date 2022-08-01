@@ -22,6 +22,15 @@
         </dialogvue>
     </div>
     <div class="buttonVue"
+         v-else-if="type=='link'"
+         @click="link(this.itemName); showDialog()">
+        {{text}}
+        <dialogVue v-model:show="dialogVisible" 
+                   @hideDialog="hideDialog">
+            {{ itemUrl }}
+        </dialogvue>
+    </div>
+    <div class="buttonVue"
          @click="showDialog"
          v-else>
         <!--При нажатии на кнопку "Создать папку"-->
@@ -96,7 +105,8 @@
                 dialogVisible: false,
                 downloadLink: "/users-files/user1/" + this.itemName,
                 file: '',
-                itemSize: 0
+                itemSize: 0,
+                itemUrl: ''
             }
         },
         methods: {
@@ -152,6 +162,12 @@
                 axios.get('/get-directory-size?' + params)
                     .then(res => {
                         this.itemSize = res.data;
+                    });
+            },
+            link() {
+                axios.get('/get-public-url?fileName=' + this.itemName)
+                    .then(res => {
+                        this.itemUrl = res.data;
                     });
             },
             logout() {
