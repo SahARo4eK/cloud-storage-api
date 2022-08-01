@@ -1,4 +1,4 @@
-<template>
+<template>    
     <div class="buttonVue"
          v-if="type=='download'">
         <a :href="downloadLink" download>{{text}}</a>
@@ -34,6 +34,13 @@
                    v-if="type=='rename'">
             <input type="text" size="30" placeholder="Введите новое имя">
             <button @click="rename"> Переименовать </button>
+        </dialogvue>
+        
+        <dialogVue v-model:show="dialogVisible" 
+                   @hideDialog="hideDialog"
+                   v-if="type=='logout'">
+            Вы действительно хотите выйти из учетной записи?
+            <button @click="logout"> Выйти </button>
         </dialogvue>
 
         {{text}}
@@ -103,6 +110,13 @@
                             location.reload();
                         });
             },
+            logout() {
+                axios.get('/logout', {
+                })
+                        .then(function () {
+                            location.reload();
+                        });
+            },   
             showDialog() {
                 this.dialogVisible = true;
             },

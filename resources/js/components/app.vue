@@ -1,4 +1,5 @@
 <template>
+    <div class="exitButton"><buttonVue :text="'Выйти'" :type="'logout'"/></div>
     <div class="table">
         <div class="table__menu">
             <buttonVue :text="'Создать папку'" :type="'create'"/>
@@ -58,6 +59,7 @@
     }
     .table {
         border: 2px solid #000;
+        margin:15px;
     }
     .table__menu {
         display: flex;
@@ -71,5 +73,8 @@
     .item__file, .item__folder {
         display: flex;
         flex-direction: row;
+    }
+    .exitButton {
+        margin: 15px;
     }
 </style>

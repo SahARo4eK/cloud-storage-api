@@ -1,4 +1,4 @@
-<!--<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -6,14 +6,14 @@
 
         <title>Laravel</title>
 
-         Fonts 
         <link href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
         @vite('./resources/css/app.css')
     </head>
     <body class="antialiased">
+		Пользователь - {{ Auth::user()->name }}
         <div id='app'></div>
         
         @vite('./resources/js/app.js')
     </body>
-</html>-->
+</html>

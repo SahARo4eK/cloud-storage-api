@@ -9,13 +9,11 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-
-	private $userFolder = '../public/users-files/user1/';
-
 	public function create(Request $request)
 	{
+		$userFolder = File::getUserDir();
 		$folderName = $request->get('folderName');
-			mkdir($this->userFolder . $folderName);
+			mkdir($userFolder . $folderName);
 		return [
 			"status" => true,
 			"message" => "Folder successfully created",
@@ -24,6 +22,7 @@ class FileController extends Controller
 
 	public function upload(Request $request)
 	{
+		$userFolder = File::getUserDir();
 //		$validator = Validator::make($request->all(), [
 //					'file' => 'required|mimes:doc,docx,pdf,txt,csv,png,jpg,gif,jpeg|max:20480000',
 //		]);
@@ -48,7 +47,7 @@ class FileController extends Controller
 				'message' => '.php extension not allowed'
 			];
 		}
-		move_uploaded_file($tmpName, $this->userFolder . $fileName);
+		move_uploaded_file($tmpName, $userFolder . $fileName);
 
 		//store your file into directory and db
 //            $save = new File();
@@ -67,8 +66,9 @@ class FileController extends Controller
 
 	public function delete(Request $request)
 	{
+		$userFolder = File::getUserDir();
 		$itemName = $request->get('itemName');
-		$itemFullPath = $this->userFolder . $itemName;
+		$itemFullPath = $userFolder . $itemName;
 			if(is_dir($itemFullPath)) {
 				rmdir($itemFullPath);
 			}
@@ -83,9 +83,10 @@ class FileController extends Controller
 
 	public function rename(Request $request)
 	{
+		$userFolder = File::getUserDir();
 		$itemName = $request->get('itemName');
 		$newName = $request->get('newName');
-		rename($this->userFolder . $itemName, $this->userFolder . $newName);
+		rename($userFolder . $itemName, $userFolder . $newName);
 		return [
 			"status" => true,
 			"message" => "File successfully deleted",
