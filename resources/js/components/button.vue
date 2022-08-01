@@ -40,7 +40,7 @@
             <input type="text" size="30" placeholder="Введите название папки">
             <button @click="create"> Создать </button>
         </dialogvue>
-        
+
         <!--При нажатии на кнопку "Загрузить файл"-->
         <dialogVue v-model:show="dialogVisible" 
                    @hideDialog="hideDialog"
@@ -49,7 +49,7 @@
             <input enctype="multipart/form-data" type="file" ref="file">
             <button @click="upload('')"> Загрузить </button>
         </dialogvue>
-        
+
         <!--При нажатии на кнопку "Загрузить файл в папку"-->
         <dialogVue v-model:show="dialogVisible" 
                    @hideDialog="hideDialog"
@@ -58,7 +58,7 @@
             <input enctype="multipart/form-data" type="file" ref="file">
             <button @click="upload(this.itemName)"> Загрузить </button>
         </dialogvue>
-        
+
         <!--При нажатии на кнопку "Удалить"-->
         <dialogVue v-model:show="dialogVisible" 
                    @hideDialog="hideDialog"
@@ -66,7 +66,7 @@
             Вы действительно хотите удалить {{itemName}}?
             <button @click="deletee"> Удалить </button>
         </dialogvue>
-        
+
         <!--При нажатии на кнопку "Переименовать"-->
         <dialogVue v-model:show="dialogVisible" 
                    @hideDialog="hideDialog"
@@ -98,7 +98,7 @@
             text: {type: String},
             type: {type: String},
             itemName: {type: String},
-            
+
         },
         data() {
             return {
@@ -114,13 +114,12 @@
                 const inputText = document.getElementsByTagName("input")[0].value;
                 axios.post('/create-folder', {
                     folderName: inputText
-                })
-                    .then(function () {
-                        location.reload();
-                    });
+                });
+                this.$emit('regetDirectory');
             },
             upload(folder) {
-                if('undefined' === folder) folder = '';  
+                if ('undefined' === folder)
+                    folder = '';
                 this.file = this.$refs.file.files[0];
                 if (this.validate(this.file)) {
                     let formData = new FormData();
@@ -132,33 +131,28 @@
                             headers: {
                                 'Content-Type': 'multipart/form-data'
                             }
-                        })
-                        .then(function () {
-                            location.reload();
                         });
+                this.$emit('regetDirectory');
                 }
             },
             deletee() {
                 axios.post('/delete-item', {
                     itemName: this.itemName
-                })
-                    .then(function () {
-                        location.reload();
-                    });
+                });
+                this.$emit('regetDirectory');
             },
             rename() {
                 const inputText = document.getElementsByTagName("input")[0].value;
                 axios.post('/rename-item', {
                     itemName: this.itemName,
                     newName: inputText
-                })
-                    .then(function () {
-                        location.reload();
-                    });
+                });
+                this.$emit('regetDirectory');
             },
             dirSize(folder) {
                 let params = '';
-                if(!! folder) params = 'folder=' + folder;
+                if (!!folder)
+                    params = 'folder=' + folder;
                 axios.get('/get-directory-size?' + params)
                     .then(res => {
                         this.itemSize = res.data;

@@ -9,18 +9,26 @@ use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
-	public function getFileUrl(Request $request) {
+
+	public function getFileUrl(Request $request)
+	{
 		$userFolder = str_replace('..', '', File::getUserDir()); // Убираю .. в начале ссылки
 		$fileFolder = str_replace('/public', '', $userFolder); // Убираю /public в начале ссылки
-		$url = ((!empty(filter_input(INPUT_SERVER, 'HTTPS'))) ? 'https' : 'http') . '://' . filter_input(INPUT_SERVER, 'HTTP_HOST'); 
+		$url = ((!empty(filter_input(INPUT_SERVER, 'HTTPS'))) ? 'https' : 'http') . '://' . filter_input(INPUT_SERVER, 'HTTP_HOST');
 		return $url . $fileFolder . $request->get('fileName');
 	}
-	
+
 	public function create(Request $request)
 	{
 		$userFolder = File::getUserDir();
 		$folderName = $request->get('folderName');
-			mkdir($userFolder . $folderName);
+		if (is_dir($userFolder . $folderName)) {
+			return [
+				"status" => false,
+				"message" => "Folder already exists",
+			];
+		}
+		mkdir($userFolder . $folderName);
 		return [
 			"status" => true,
 			"message" => "Folder successfully created",
@@ -31,15 +39,14 @@ class FileController extends Controller
 	{
 		$userFolder = File::getUserDir();
 		$paramFolder = $request->get('folder');
-		if($paramFolder != null) {
-			$uploadFolder = $userFolder . '/' .$paramFolder;
-		}
-		else {
+		if ($paramFolder != null) {
+			$uploadFolder = $userFolder . '/' . $paramFolder;
+		} else {
 			$uploadFolder = $userFolder;
 		}
-		
+
 		$validator = Validator::make($request->all(), [
-					'file' => 'required|max:2048',
+				'file' => 'required|max:2048',
 		]);
 		if ($validator->fails()) {
 			return [
@@ -49,7 +56,7 @@ class FileController extends Controller
 		}
 		$tmpName = $_FILES['file']['tmp_name'];
 		$fileName = $_FILES['file']['name'];
-		if('php' == File::getExtension($fileName)){
+		if ('php' == File::getExtension($fileName)) {
 			return [
 				'status' => 'false',
 				'message' => '.php extension not allowed'
@@ -68,16 +75,15 @@ class FileController extends Controller
 		$userFolder = File::getUserDir();
 		$itemName = $request->get('itemName');
 		$itemFullPath = $userFolder . $itemName;
-			if(is_dir($itemFullPath)) {
-				$files = File::scanDirectory($itemFullPath);
-				foreach ($files as $file) {
-					unlink($itemFullPath . '/' . $file);
-				}
-				rmdir($itemFullPath);
+		if (is_dir($itemFullPath)) {
+			$files = File::scanDirectory($itemFullPath);
+			foreach ($files as $file) {
+				unlink($itemFullPath . '/' . $file);
 			}
-			else {
-				unlink($itemFullPath);
-			}
+			rmdir($itemFullPath);
+		} else {
+			unlink($itemFullPath);
+		}
 		return [
 			"status" => true,
 			"message" => "File successfully deleted",
@@ -95,4 +101,5 @@ class FileController extends Controller
 			"message" => "File successfully deleted",
 		];
 	}
+
 }

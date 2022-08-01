@@ -2,26 +2,26 @@
     <div class="exitButton"><buttonVue :text="'Выйти'" :type="'logout'"/></div>
     <div class="table">
         <div class="table__menu">
-            <buttonVue :text="'Создать папку'" :type="'create'"/>
-            <buttonVue :text="'Загрузить файл'" :type="'upload'"/>
-            <buttonVue :text="'Размер директории'" :type="'dirSize'"/>
+            <buttonVue :text="'Создать папку'" :type="'create'" @regetDirectory="reloading"/>
+            <buttonVue :text="'Загрузить файл'" :type="'upload'" @regetDirectory="reloading"/>
+            <buttonVue :text="'Размер директории'" :type="'dirSize'" />
         </div>
         <div class="table__items">
             <div class="table__item" 
                  v-for="object in objects">
                 <div class="item__folder"
                      v-if= "object.type=='folder'">
-                    <div class="item__name" style="margin-right: 10px"> {{object.name}}</div>
-                    <buttonVue :text="'Переименовать'" :type="'rename'" :itemName="object.name"/>
-                    <buttonVue :text="'Удалить'" :type="'delete'" :itemName="object.name"/>
-                    <buttonVue :text="'Загрузить файл сюда'" :type="'folderUpload'" :itemName="object.name"/>
+                    <div class="item__name" style="margin-right: 10px" > {{object.name}}</div>
+                    <buttonVue :text="'Переименовать'" :type="'rename'" :itemName="object.name" @regetDirectory="reloading"/>
+                    <buttonVue :text="'Удалить'" :type="'delete'" :itemName="object.name" @regetDirectory="reloading"/>
+                    <buttonVue :text="'Загрузить файл сюда'" :type="'folderUpload'" :itemName="object.name" @regetDirectory="reloading"/>
                     <buttonVue :text="'Размер'" :type="'folderSize'" :itemName="object.name"/>
                 </div>
                 <div class="item__file"
                      v-else>
                     <div class="item__name" style="margin-right: 10px">{{object.name}}</div>
-                    <buttonVue :text="'Переименовать'" :type="'rename'" :itemName="object.name"/>
-                    <buttonVue :text="'Удалить'" :type="'delete'" :itemName="object.name"/>
+                    <buttonVue :text="'Переименовать'" :type="'rename'" :itemName="object.name" @regetDirectory="reloading"/>
+                    <buttonVue :text="'Удалить'" :type="'delete'" :itemName="object.name" @regetDirectory="reloading"/>
                     <buttonVue :text="'Скачать'" :type="'download'" :itemName="object.name"/>
                     <buttonVue :text="'Ссылка'" :type="'link'" :itemName="object.name"/>
                 </div>
@@ -46,12 +46,15 @@
             }
         },
         mounted() {
-            axios.get('/get-directory')
+            this.reloading();
+        },
+        methods: {
+            reloading() {
+                axios.get('/get-directory')
                     .then(res => {
                         this.objects = res.data;
                     });
-        },
-        methods: {
+            }
         }
     }
 </script>
