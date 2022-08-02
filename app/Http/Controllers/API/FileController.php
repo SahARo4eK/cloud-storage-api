@@ -75,6 +75,12 @@ class FileController extends Controller
 		$userFolder = File::getUserDir();
 		$itemName = $request->get('itemName');
 		$itemFullPath = $userFolder . $itemName;
+		if (!file_exists($itemFullPath)) {
+			return [
+				"status" => false,
+				"message" => "File or folder does not exist",
+			];
+		}
 		if (is_dir($itemFullPath)) {
 			$files = File::scanDirectory($itemFullPath);
 			foreach ($files as $file) {
@@ -95,10 +101,16 @@ class FileController extends Controller
 		$userFolder = File::getUserDir();
 		$itemName = $request->get('itemName');
 		$newName = $request->get('newName');
+		if (!file_exists($userFolder . $itemName)) {
+			return [
+				"status" => false,
+				"message" => "File or folder does not exist",
+			];
+		}
 		rename($userFolder . $itemName, $userFolder . $newName);
 		return [
 			"status" => true,
-			"message" => "File successfully deleted",
+			"message" => "File successfully renamed",
 		];
 	}
 

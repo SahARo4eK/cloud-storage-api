@@ -132,7 +132,7 @@
                                 'Content-Type': 'multipart/form-data'
                             }
                         });
-                this.$emit('regetDirectory');
+                    this.$emit('regetDirectory');
                 }
             },
             deletee() {
