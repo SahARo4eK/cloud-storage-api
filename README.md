@@ -16,14 +16,14 @@
 - Запрещено загружать *.php файлы
 
 Адреса запросов API:
-http://80.249.144.53/get-directory - GET - директория пользователя
-http://80.249.144.53/get-user-name - GET - имена зарегистрированых пользователей
-http://80.249.144.53/get-directory-size - GET - параметры: folder - размер директории
-http://80.249.144.53/get-public-url - GET - параметры: fileName - публичная ссылка на файл
-http://80.249.144.53/create-folder - POST - параметры: folderName - создание папки
-http://80.249.144.53/upload-file - POST - параметры: file, folder - загрузка файла в папку
-http://80.249.144.53/delete-item - POST - параметры: itemName - удаление файла или папки
-http://80.249.144.53/rename-item - POST - параметры: itemName, newName - переименование файла и папки
+- http://80.249.144.53/get-directory - GET - директория пользователя
+- http://80.249.144.53/get-user-name - GET - имена зарегистрированых пользователей
+- http://80.249.144.53/get-directory-size - GET - параметры: folder - размер директории
+- http://80.249.144.53/get-public-url - GET - параметры: fileName - публичная ссылка на файл
+- http://80.249.144.53/create-folder - POST - параметры: folderName - создание папки
+- http://80.249.144.53/upload-file - POST - параметры: file, folder - загрузка файла в папку
+- http://80.249.144.53/delete-item - POST - параметры: itemName - удаление файла или папки
+- http://80.249.144.53/rename-item - POST - параметры: itemName, newName - переименование файла и папки
 
 
 Этапы установки на сервер:
@@ -37,9 +37,13 @@ http://80.249.144.53/rename-item - POST - параметры: itemName, newName 
 7. Пулим проект в папку /var/www/html - git pull git@github.com:SahARo4eK/cloud-storage-api.git   Если папки нет — создаем.
 8. Устанавливаем sail через composer require laravel/sail
 9. apt install php-pgsql
-10. установить права
+10. Перенастроить адрес связи с БД, адрес сервиса
+11. установить права
 sudo chown -R $USER:www-data storage
 sudo chown -R $USER:www-data bootstrap/cache
 sudo chown -R $USER:www-data public/users-files/
 
 В директории проекта запустить ./vendor/bin/sail up
+
+
+Postman коллекция запросов прилагается
